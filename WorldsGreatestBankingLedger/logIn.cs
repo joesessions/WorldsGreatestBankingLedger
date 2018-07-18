@@ -18,8 +18,10 @@ namespace WorldsGreatestBankingLedger
 
             while (!logInSuccess)
             {
+                Console.WriteLine();
                 Console.WriteLine("Enter your username:");
                 string userName = Console.ReadLine();
+                Console.WriteLine();
                 Console.WriteLine("Enter your password: (a maximum of 2 characters!)");
                 string password = Console.ReadLine();
 

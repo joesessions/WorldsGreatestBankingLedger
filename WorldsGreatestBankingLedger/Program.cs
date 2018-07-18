@@ -23,7 +23,7 @@ namespace WorldsGreatestBankingLedger
                 transactID = 1,
                 date = DateTime.Now,
                 amount = -2711,
-                notes = "Trip to candy store. I think I have a problem."
+                notes = "Trip to candy store."
             };
             var BobSmithChecking = new account
             {
@@ -113,9 +113,6 @@ namespace WorldsGreatestBankingLedger
             }
 
 
-
-
-
             Console.WriteLine("That's all folks!");
             Console.ReadLine();
 
@@ -123,5 +120,3 @@ namespace WorldsGreatestBankingLedger
     }
 }
 
-
-//enum acctType : { Checking = 1, Savings, MoneyMarket }
