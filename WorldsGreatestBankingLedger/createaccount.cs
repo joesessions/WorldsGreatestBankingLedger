@@ -29,8 +29,23 @@ namespace WorldsGreatestBankingLedger
                     if (newAcct.acctType == 1 || newAcct.acctType == 2)
                     {
                         Console.WriteLine();
-                        Console.WriteLine("What would you like to name this account?");
-                        newAcct.name = Console.ReadLine();
+                        bool acctNamed = false;
+                        while (!acctNamed)
+                        {
+                            Console.WriteLine("What would you like to name this account?");
+                            Console.WriteLine();
+                            newAcct.name = Console.ReadLine();
+                            if (newAcct.name != "")
+                            {
+                                acctNamed = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("You must give the account a name.");
+                                Console.WriteLine();
+                            }
+                        }
+
                         currentUser.accounts.Add(newAcct);
                         menuSuccess = true;
                         

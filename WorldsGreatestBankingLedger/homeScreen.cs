@@ -146,7 +146,7 @@ namespace WorldsGreatestBankingLedger
                             Console.WriteLine();
                             Console.WriteLine("Press Enter to continue.");
                             Console.ReadLine();
-                        };
+                        }
                         if (userSelection == "3")
                         {
                             float balance = 0;
@@ -157,9 +157,10 @@ namespace WorldsGreatestBankingLedger
                             Console.Clear();
                             Console.WriteLine();
                             Console.WriteLine("Balance for account #" + acctSelection + " " + User.accounts[acctSelection - 1].name + " " + acctTypes[User.accounts[acctSelection - 1].acctType - 1] + ": " + balance);
+                            Console.WriteLine();
                             Console.WriteLine("Press Enter to continue.");
                             Console.ReadLine();
-                };
+                        }   
                         if (userSelection == "4")
                         {
                             float balance = 0;
