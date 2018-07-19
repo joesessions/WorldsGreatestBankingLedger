@@ -13,44 +13,32 @@ namespace WorldsGreatestBankingLedger
             // Initiatize variables
             List<string> acctTypes = new List<string> { "Checking", "Savings" };
             int acctSelection = 1;
-
             Console.WriteLine();
 
-            if (User.accounts.Count == 1)
+            bool accountSelected = false;
+            while (!accountSelected && User.loggedIn)
             {
-                Console.WriteLine("Would you like to add another account? (Y or N)");
-                string addAcctAnswer = Console.ReadLine();
-                if (addAcctAnswer == "y" || addAcctAnswer == "Y")
-                    {
-                        createAccount acctCreator = new createAccount();
-                        // method will update user with a newly created account in the user object.
-                        User = acctCreator.newAccount(User);
-                        acctSelection = User.accounts.Count;
-                    }
-                else
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine("Which account would you like to work with?");
+                Console.WriteLine();
+                Console.WriteLine("X Logout");
+                Console.WriteLine("0 Add a new account");
+                foreach (account acct in User.accounts)
                 {
-                    acctSelection = 1; 
+                    Console.WriteLine(acct.acctID + " " + acct.name + " " + acctTypes[acct.acctType - 1]);
                 }
-            }
-
-            else
-            {
-                bool accountSelected = false;
-                while (!accountSelected)
+                try
                 {
-                    Console.Clear();
                     Console.WriteLine();
-                    Console.WriteLine("Which account would you like to work with?");
-                    Console.WriteLine();
-                    Console.WriteLine("0 Add a new account");
-                    foreach (account acct in User.accounts)
+                    string acctSelectionString = Console.ReadLine();
+                    if (acctSelectionString == "X" || acctSelectionString == "x")
                     {
-                        Console.WriteLine(acct.acctID + " " + acct.name + " " + acctTypes[acct.acctType - 1]);
+                        User.loggedIn = false;
                     }
-                    try
+                    else
                     {
-                        Console.WriteLine();
-                        acctSelection = Convert.ToInt16(Console.ReadLine());
+                        acctSelection = Convert.ToInt16(acctSelectionString);
                         Console.WriteLine();
                         if (acctSelection == 0)
                         {
@@ -69,64 +57,65 @@ namespace WorldsGreatestBankingLedger
                             Console.WriteLine("Sorry, try again.");
                             Console.WriteLine();
                         }
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Sorry, try again.");
+                    Console.WriteLine();
+
+                }
+            }
+            
+            
+            // Account is selected. Loop until user done with this account.
+            bool moreWithThisAcct = true;
+            while (moreWithThisAcct && User.loggedIn)
+            {
+
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine("What shall we do with {0} {1}?", User.accounts[acctSelection-1].name, acctTypes[User.accounts[acctSelection-1].acctType-1] );
+                Console.WriteLine();
+                Console.WriteLine("1 -- Record deposit");
+                Console.WriteLine("2 -- Record withdrawal");
+                Console.WriteLine("3 -- Check balance");
+                Console.WriteLine("4 -- See transaction history");
+                Console.WriteLine("5 -- Done with this account");
+                Console.WriteLine();
+                string userSelection = Console.ReadLine();
+                Console.WriteLine();
+
+                if (userSelection == "1")
+                {
+
+                    Console.WriteLine("How much did you deposit?");
+                    float transAmount = 0;
+                    try
+                    {
+                        transAmount = Convert.ToSingle(Console.ReadLine());
+                        Console.WriteLine();
+                        Console.WriteLine("Enter a note for this transaction. (optional)");
+                        string transactNote = Console.ReadLine();
+                        int nextTransactID = User.accounts[acctSelection - 1].transactions.Count + 1;
+                        User.accounts[acctSelection - 1].transactions.Add(new transaction
+                        {
+                            transactID = nextTransactID,
+                            date = DateTime.Now,
+                            amount = transAmount,
+                            notes = transactNote
+                        });
+                        Console.WriteLine();
 
                     }
                     catch
                     {
-                        Console.WriteLine();
-                        Console.WriteLine("Sorry, try again.");
-                        Console.WriteLine();
-
+                        Console.WriteLine("Sorry, your input was of the wrong format.");
+                        Console.ReadLine();
                     }
-                }
-            }
-            
-                    // Account is selected. Loop until user done with this account.
-                    bool moreWithThisAcct = true;
-                    while (moreWithThisAcct)
-                    {
-
-                        Console.Clear();
-                        Console.WriteLine();
-                        Console.WriteLine("What shall we do with {0} {1}?", User.accounts[acctSelection-1].name, acctTypes[User.accounts[acctSelection-1].acctType-1] );
-                        Console.WriteLine("1 -- Record deposit");
-                        Console.WriteLine("2 -- Record withdrawal");
-                        Console.WriteLine("3 -- Check balance");
-                        Console.WriteLine("4 -- See transaction history");
-                        Console.WriteLine("5 -- Done with this account");
-                        Console.WriteLine();
-                        string userSelection = Console.ReadLine();
-                        Console.WriteLine();
-
-                        if (userSelection == "1")
-                        {
-
-                            Console.WriteLine("How much did you deposit?");
-                            float transAmount = 0;
-                            try
-                            {
-                                transAmount = Convert.ToSingle(Console.ReadLine());
-                                Console.WriteLine();
-                                Console.WriteLine("Enter a note for this transaction. (optional)");
-                                string transactNote = Console.ReadLine();
-                                int nextTransactID = User.accounts[acctSelection - 1].transactions.Count + 1;
-                                User.accounts[acctSelection - 1].transactions.Add(new transaction
-                                {
-                                    transactID = nextTransactID,
-                                    date = DateTime.Now,
-                                    amount = transAmount,
-                                    notes = transactNote
-                                });
-                                Console.WriteLine();
-
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Sorry, your input was of the wrong format.");
-                                Console.ReadLine();
-                            }
-                            Console.WriteLine("Press Enter to continue.");
-                            Console.ReadLine();
+                    Console.WriteLine("Press Enter to continue.");
+                    Console.ReadLine();
                 }
                         if (userSelection == "2")
                         {
@@ -177,7 +166,7 @@ namespace WorldsGreatestBankingLedger
                                 if (User.accounts[acctSelection - 1].transactions[i].amount < 0)
                                 {
                                     d = Convert.ToDateTime(User.accounts[acctSelection - 1].transactions[i].date).Date.ToString("d");
-                                    Console.WriteLine(d + "                    " + User.accounts[acctSelection - 1].transactions[i].amount + "            " + balance + "  " + User.accounts[acctSelection - 1].transactions[i].notes);
+                                    Console.WriteLine(d + "                   (" + -User.accounts[acctSelection - 1].transactions[i].amount + ")           " + balance + "  " + User.accounts[acctSelection - 1].transactions[i].notes);
                                 }
                                 else
                                 {

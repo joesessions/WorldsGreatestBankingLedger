@@ -15,6 +15,7 @@ namespace WorldsGreatestBankingLedger
         public string lastName { get; set; }
         public string password { get; set; }
         public List<account> accounts = new List<account>();
+        public bool loggedIn { get; set; }
 
     }
 }

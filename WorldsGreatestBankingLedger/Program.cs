@@ -156,8 +156,8 @@ namespace WorldsGreatestBankingLedger
 
 
                 // User logged in, going to home screen
-                bool moreTransactions = true;
-                while (moreTransactions)
+                currentUser.loggedIn = true;
+                while (currentUser.loggedIn)
                 {
                     homeScreen currentCycle = new homeScreen();
 
@@ -168,25 +168,26 @@ namespace WorldsGreatestBankingLedger
                         // method will update user with a newly created account in the user object.
                         currentUser = acctCreator.newAccount(currentUser);
                     }
+
                     currentUser = currentCycle.homescreen(currentUser);
                     //updates list item
                     userList[currentUser.userId] = currentUser;
                     Console.Clear();
                     Console.WriteLine();
-                    Console.WriteLine("Could I do something else for you? (\"n\" to logout)");
-                    Console.WriteLine();
-                    string moreAnswer = Console.ReadLine();
-                    Console.WriteLine();
-                    if (moreAnswer == "n" || moreAnswer == "no" || moreAnswer == "N" || moreAnswer == "NO" || moreAnswer == "No")
-                    {
-                        Console.WriteLine("Okay! Thanks for using the World's Greatest Banking Ledger!");
-                        Console.WriteLine();
-                        Console.ReadLine();
-                        Console.Clear();
-                        moreTransactions = false;
-                    } 
+                    //Console.WriteLine("Could I do something else for you? (\"n\" to logout)");
+                    //Console.WriteLine();
+                    //string moreAnswer = Console.ReadLine();
+                    //Console.WriteLine();
+                    //if (moreAnswer == "n" || moreAnswer == "no" || moreAnswer == "N" || moreAnswer == "NO" || moreAnswer == "No")
+                    //{
+                    //    Console.WriteLine("Okay! Thanks for using the World's Greatest Banking Ledger!");
+                    //    Console.WriteLine();
+                    //    Console.ReadLine();
+                    //    Console.Clear();
+                    //    moreTransactions = false;
+                    }
                 }
-            }
+            
 
 
             
